@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Rayyan!</title>
+    <style>
+        :root {
+            --craft-bg: #cbb493;
+            --craft-dark: #b59b77;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            background-color: var(--craft-bg);
+            background-image: 
+                radial-gradient(rgba(0,0,0,0.07) 15%, transparent 16%),
+                radial-gradient(rgba(255,255,255,0.08) 15%, transparent 16%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Closed Card Cover */
+        .card-cover {
+            width: 380px;
+            height: 520px;
+            background: transparent;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transform-origin: left center;
+            overflow: hidden;
+        }
+
+        .card-cover:hover {
+            transform: translateY(-6px) rotate(-1deg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .card-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        /* Two-Page Spread State */
+        .book-spread {
+            display: none;
+            width: 860px;
+            max-width: 95vw;
+            height: 540px;
+            background: transparent;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            position: relative;
+            flex-direction: row;
+            overflow: hidden;
+            animation: openBook 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes openBook {
+            0% { transform: scale(0.8) rotateY(90deg); opacity: 0; }
+            100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+        }
+
+        .page {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .left-page {
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .right-page {
+            background-color: transparent;
+        }
+
+        /* Envelope & Left Background Clipping */
+        .envelope-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .envelope-bg {
+            position: absolute;
+            top: 0;
+            right: -12px;
+            width: calc(100% + 12px);
+            height: 100%;
+            background-image: url('2.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Popup Letter */
+        .popup-letter {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('3.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 0;
+            box-shadow: none;
+            display: none;
+            z-index: 50;
+            cursor: pointer;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Cake & Right Background Clipping */
+        .cake-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .cake-bg {
+            position: absolute;
+            top: 0;
+            left: -12px;
+            width: calc(100% + 12px);
+            height: 100%;
+            background-image: url('4.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Cut-out Flames */
+        .flame {
+            position: absolute;
+            width: 22px;
+            height: 38px;
+            background: radial-gradient(circle at 50% 70%, #fff7d6 0%, #ff9900 60%, #ff3300 100%);
+            border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+            box-shadow: 0 0 10px #ff9900, 0 0 16px #ff3300;
+            transform-origin: bottom center;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            animation: flicker 0.15s infinite alternate;
+            cursor: pointer;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.08) rotate(3deg); }
+        }
+
+        /* Flame Positions */
+        .flame-1 {
+            top: 48%;
+            left: 30.5%;
+        }
+
+        .flame-2 {
+            top: 48%;
+            left: 64.5%;
+        }
+
+        .flame.extinguished {
+            opacity: 0;
+            transform: scale(0.2) translateY(-20px);
+            animation: none;
+            pointer-events: none;
+        }
+
+        /* Smoke effect */
+        .smoke {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(220, 220, 220, 0.7);
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes riseSmoke {
+            0% { transform: translateY(0) scale(0.8); opacity: 0.8; }
+            100% { transform: translateY(-50px) scale(2); opacity: 0; }
+        }
+
+        .smoke.active {
+            animation: riseSmoke 1s ease-out forwards;
+        }
+
+        /* Microphone Control Panel */
+        .mic-panel {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background: rgba(255, 249, 239, 0.9);
+            padding: 10px 14px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #d4c2a5;
+            z-index: 20;
+        }
+
+        .mic-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .mic-btn, .fallback-btn {
+            background: #8b2626;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .mic-btn:hover, .fallback-btn:hover {
+            background: #a33232;
+        }
+
+        .level-meter-wrapper {
+            flex-grow: 1;
+            height: 8px;
+            background: #e2d3be;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .level-meter-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #4CAF50, #FFEB3B, #F44336);
+            transition: width 0.08s ease;
+        }
+
+        @media (max-width: 900px) {
+            .book-spread {
+                flex-direction: column;
+                height: auto;
+                width: 380px;
+            }
+            .page {
+                height: 480px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Closed Card Cover -->
+    <div class="card-cover" id="cardCover" onclick="openCard()">
+        <img src="1.png" alt="Birthday Cover Photo">
+    </div>
+
+    <!-- Opened Two-Page Spread -->
+    <div class="book-spread" id="bookSpread">
+
+        <!-- Left Page: Envelope & Letter -->
+        <div class="page left-page">
+            <div class="envelope-container" onclick="openLetter()">
+                <div class="envelope-bg"></div>
+                <div class="popup-letter" id="popupLetter" onclick="closeLetter(event)"></div>
+            </div>
+        </div>
+
+        <!-- Right Page: Cake & Candles with Mic Blow Detection -->
+        <div class="page right-page">
+            <div class="cake-container" id="cakeContainer">
+                <div class="cake-bg">
+                    <!-- Cut-out Flames -->
+                    <div class="flame flame-1" id="flame1"></div>
+                    <div class="flame flame-2" id="flame2"></div>
+
+                    <!-- Smoke elements -->
+                    <div class="smoke" id="smoke1" style="top: 45%; left: 31%;"></div>
+                    <div class="smoke" id="smoke2" style="top: 45%; left: 65%;"></div>
+                </div>
+
+                <!-- Microphone & Fallback Controls -->
+                <div class="mic-panel">
+                    <div class="mic-controls-row">
+                        <button class="mic-btn" id="micBtn" onclick="initMic()">Enable Mic</button>
+                        <div class="level-meter-wrapper">
+                            <div class="level-meter-fill" id="meterFill"></div>
+                        </div>
+                        <button class="fallback-btn" id="fallbackBtn" onmousedown="startBlowing()" onmouseup="stopBlowing()" ontouchstart="startBlowing()" ontouchend="stopBlowing()">Hold to Blow</button>
+                    </div>
+                    <div style="font-size: 9px; color: #666; text-align: center;" id="micStatus">
+                        Blow into mic or hold button / press Spacebar to blow out candles
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cardCover = document.getElementById('cardCover');
+        const bookSpread = document.getElementById('bookSpread');
+        const popupLetter = document.getElementById('popupLetter');
+        const flame1 = document.getElementById('flame1');
+        const flame2 = document.getElementById('flame2');
+        const smoke1 = document.getElementById('smoke1');
+        const smoke2 = document.getElementById('smoke2');
+        const meterFill = document.getElementById('meterFill');
+        const micStatus = document.getElementById('micStatus');
+
+        let isOpened = false;
+        let letterExpanded = false;
+        let candlesExtinguished = false;
+
+        // Audio & Blowing variables
+        let audioContext = null;
+        let analyser = null;
+        let microphone = null;
+        let javascriptNode = null;
+        let isMicActive = false;
+        let blowAccumulator = 0;
+        let isHoldingBlow = false;
+
+        function openCard() {
+            if (isOpened) return;
+            isOpened = true;
+            cardCover.style.display = 'none';
+            bookSpread.style.display = 'flex';
+        }
+
+        function openLetter() {
+            if (letterExpanded) return;
+            letterExpanded = true;
+            popupLetter.style.display = 'block';
+        }
+
+        function closeLetter(e) {
+            e.stopPropagation();
+            if (!letterExpanded) return;
+            letterExpanded = false;
+            popupLetter.style.display = 'none';
+        }
+
+        // Web Audio API Microphone Setup
+        async function initMic() {
+            if (isMicActive) return;
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 512;
+
+                microphone.connect(analyser);
+                analyser.connect(javascriptNode);
+                javascriptNode.connect(audioContext.destination);
+
+                javascriptNode.onaudioprocess = function() {
+                    if (candlesExtinguished) return;
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    
+                    let values = 0;
+                    for (let i = 0; i < array.length; i++) {
+                        values += array[i];
+                    }
+                    let average = values / array.length;
+
+                    let meterPercent = Math.min(100, (average / 60) * 100);
+                    meterFill.style.width = meterPercent + '%';
+
+                    if (average > 25 || isHoldingBlow) {
+                        handleBlowProgress(0.08);
+                    } else {
+                        blowAccumulator = Math.max(0, blowAccumulator - 0.04);
+                        updateFlameBending(0);
+                    }
+                };
+
+                isMicActive = true;
+                document.getElementById('micBtn').textContent = "Mic Active";
+                micStatus.textContent = "Microphone connected! Blow strongly into your mic.";
+            } catch (err) {
+                console.error("Mic access denied or HTTPS required:", err);
+                micStatus.textContent = "Mic blocked (HTTPS required). Use Hold to Blow button or Spacebar!";
+            }
+        }
+
+        function startBlowing() {
+            isHoldingBlow = true;
+            meterFill.style.width = '100%';
+        }
+
+        function stopBlowing() {
+            isHoldingBlow = false;
+            if (!candlesExtinguished) meterFill.style.width = '0%';
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && isOpened && !candlesExtinguished) {
+                e.preventDefault();
+                startBlowing();
+                handleBlowProgress(0.15);
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'Space' && isOpened && !candlesExtinguished) {
+                e.preventDefault();
+                stopBlowing();
+            }
+        });
+
+        function handleBlowProgress(increment) {
+            if (candlesExtinguished) return;
+            
+            blowAccumulator += increment;
+            
+            updateFlameBending(Math.min(1, blowAccumulator / 0.5));
+
+            if (blowAccumulator >= 0.5) {
+                extinguishCandles();
+            }
+        }
+
+        function updateFlameBending(intensity) {
+            if (candlesExtinguished) return;
+            const skew = intensity * 45;
+            const scaleY = 1 - (intensity * 0.3);
+            const scaleX = 1 + (intensity * 0.2);
+            flame1.style.transform = `skewX(-${skew}deg) scale(${scaleX}, ${scaleY}) rotate(-10deg)`;
+            flame2.style.transform = `skewX(-${skew}deg) scale(${scaleX}, ${scaleY}) rotate(10deg)`;
+        }
+
+        function extinguishCandles() {
+            if (candlesExtinguished) return;
+            candlesExtinguished = true;
+
+            flame1.classList.add('extinguished');
+            flame2.classList.add('extinguished');
+
+            smoke1.classList.add('active');
+            smoke2.classList.add('active');
+
+            meterFill.style.width = '0%';
+            micStatus.textContent = "Candles blown out!";
+        }
+    </script>
+</body>
+</html>
