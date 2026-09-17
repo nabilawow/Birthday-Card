@@ -31,7 +31,6 @@
             box-sizing: border-box;
         }
 
-        /* Closed Card Cover */
         .card-cover {
             width: 380px;
             height: 520px;
@@ -104,7 +103,6 @@
             background-color: transparent;
         }
 
-        /* Envelope & Left Background Clipping */
         .envelope-container {
             position: relative;
             width: 100%;
@@ -124,7 +122,6 @@
             background-position: center;
         }
 
-        /* Popup Letter */
         .popup-letter {
             position: absolute;
             inset: 0;
@@ -146,7 +143,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Cake & Right Background Clipping */
         .cake-container {
             position: relative;
             width: 100%;
@@ -167,7 +163,6 @@
             background-position: center;
         }
 
-        /* Cut-out Flames */
         .flame {
             position: absolute;
             width: 22px;
@@ -186,7 +181,6 @@
             100% { transform: scale(1.08) rotate(3deg); }
         }
 
-        /* Flame Positions */
         .flame-1 {
             top: 48%;
             left: 30.5%;
@@ -204,7 +198,6 @@
             pointer-events: none;
         }
 
-        /* Smoke effect */
         .smoke {
             position: absolute;
             width: 12px;
@@ -225,7 +218,6 @@
             animation: riseSmoke 1s ease-out forwards;
         }
 
-        /* Microphone Control Panel */
         .mic-panel {
             position: absolute;
             bottom: 15px;
@@ -296,15 +288,16 @@
 </head>
 <body>
 
-    <!-- Closed Card Cover -->
+    <audio id="bgMusic" loop autoplay preload="auto">
+        <source src="bake shop.mp4" type="audio/mp4">
+    </audio>
+
     <div class="card-cover" id="cardCover" onclick="openCard()">
         <img src="1.png" alt="Birthday Cover Photo">
     </div>
 
-    <!-- Opened Two-Page Spread -->
     <div class="book-spread" id="bookSpread">
 
-        <!-- Left Page: Envelope & Letter -->
         <div class="page left-page">
             <div class="envelope-container" onclick="openLetter()">
                 <div class="envelope-bg"></div>
@@ -312,20 +305,16 @@
             </div>
         </div>
 
-        <!-- Right Page: Cake & Candles with Mic Blow Detection -->
         <div class="page right-page">
             <div class="cake-container" id="cakeContainer">
                 <div class="cake-bg">
-                    <!-- Cut-out Flames -->
                     <div class="flame flame-1" id="flame1"></div>
                     <div class="flame flame-2" id="flame2"></div>
 
-                    <!-- Smoke elements -->
                     <div class="smoke" id="smoke1" style="top: 45%; left: 31%;"></div>
                     <div class="smoke" id="smoke2" style="top: 45%; left: 65%;"></div>
                 </div>
 
-                <!-- Microphone & Fallback Controls -->
                 <div class="mic-panel">
                     <div class="mic-controls-row">
                         <button class="mic-btn" id="micBtn" onclick="initMic()">Enable Mic</button>
@@ -352,12 +341,12 @@
         const smoke2 = document.getElementById('smoke2');
         const meterFill = document.getElementById('meterFill');
         const micStatus = document.getElementById('micStatus');
+        const bgMusic = document.getElementById('bgMusic');
 
         let isOpened = false;
         let letterExpanded = false;
         let candlesExtinguished = false;
 
-        // Audio & Blowing variables
         let audioContext = null;
         let analyser = null;
         let microphone = null;
@@ -366,11 +355,35 @@
         let blowAccumulator = 0;
         let isHoldingBlow = false;
 
+        window.addEventListener('DOMContentLoaded', () => {
+            if (bgMusic) {
+                bgMusic.volume = 0.6;
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        const unlock = () => {
+                            bgMusic.play().then(() => {
+                                document.removeEventListener('click', unlock);
+                                document.removeEventListener('keydown', unlock);
+                                document.removeEventListener('touchstart', unlock);
+                            }).catch(() => {});
+                        };
+                        document.addEventListener('click', unlock);
+                        document.addEventListener('keydown', unlock);
+                        document.addEventListener('touchstart', unlock);
+                    });
+                }
+            }
+        });
+
         function openCard() {
             if (isOpened) return;
             isOpened = true;
             cardCover.style.display = 'none';
             bookSpread.style.display = 'flex';
+            if (bgMusic && bgMusic.paused) {
+                bgMusic.play().catch(() => {});
+            }
         }
 
         function openLetter() {
@@ -386,7 +399,6 @@
             popupLetter.style.display = 'none';
         }
 
-        // Web Audio API Microphone Setup
         async function initMic() {
             if (isMicActive) return;
             try {
@@ -461,11 +473,8 @@
 
         function handleBlowProgress(increment) {
             if (candlesExtinguished) return;
-            
             blowAccumulator += increment;
-            
             updateFlameBending(Math.min(1, blowAccumulator / 0.5));
-
             if (blowAccumulator >= 0.5) {
                 extinguishCandles();
             }
@@ -483,13 +492,10 @@
         function extinguishCandles() {
             if (candlesExtinguished) return;
             candlesExtinguished = true;
-
             flame1.classList.add('extinguished');
             flame2.classList.add('extinguished');
-
             smoke1.classList.add('active');
             smoke2.classList.add('active');
-
             meterFill.style.width = '0%';
             micStatus.textContent = "Candles blown out!";
         }
