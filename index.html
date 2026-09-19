@@ -25,8 +25,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 40px;
-            padding-bottom: 40px;
+            padding: 20px;
             overflow-x: hidden;
             box-sizing: border-box;
         }
@@ -34,6 +33,7 @@
         .card-cover {
             width: 380px;
             height: 520px;
+            max-width: 95vw;
             background: transparent;
             border-radius: 12px;
             box-shadow: var(--shadow);
@@ -61,13 +61,12 @@
             border-radius: 12px;
         }
 
-        /* Two-Page Spread State */
         .book-spread {
             display: none;
             width: 860px;
             max-width: 95vw;
             height: 540px;
-            background: transparent;
+            background: #2b1d15;
             border-radius: 8px;
             box-shadow: var(--shadow);
             position: relative;
@@ -82,7 +81,7 @@
         }
 
         .page {
-            flex: 1;
+            width: 50%;
             height: 100%;
             position: relative;
             box-sizing: border-box;
@@ -113,9 +112,8 @@
 
         .envelope-bg {
             position: absolute;
-            top: 0;
-            right: -12px;
-            width: calc(100% + 12px);
+            inset: 0;
+            width: 100%;
             height: 100%;
             background-image: url('2.png');
             background-size: cover;
@@ -153,13 +151,11 @@
 
         .cake-bg {
             position: absolute;
-            top: 0;
-            left: -12px;
-            width: calc(100% + 12px);
+            inset: 0;
+            width: 100%;
             height: 100%;
             background-image: url('4.png');
-            background-size: contain;
-            background-repeat: no-repeat;
+            background-size: cover;
             background-position: center;
         }
 
@@ -220,18 +216,18 @@
 
         .mic-panel {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            background: rgba(255, 249, 239, 0.9);
-            padding: 10px 14px;
-            border-radius: 10px;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            background: rgba(255, 249, 239, 0.95);
+            padding: 8px 12px;
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border: 1px solid #d4c2a5;
-            z-index: 20;
+            z-index: 100;
         }
 
         .mic-controls-row {
@@ -245,9 +241,9 @@
             background: #8b2626;
             color: #fff;
             border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 10px;
             font-family: inherit;
             cursor: pointer;
             font-weight: bold;
@@ -260,9 +256,9 @@
 
         .level-meter-wrapper {
             flex-grow: 1;
-            height: 8px;
+            height: 6px;
             background: #e2d3be;
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
             position: relative;
         }
@@ -279,8 +275,10 @@
                 flex-direction: column;
                 height: auto;
                 width: 380px;
+                max-width: 95vw;
             }
             .page {
+                width: 100%;
                 height: 480px;
             }
         }
@@ -297,7 +295,6 @@
     </div>
 
     <div class="book-spread" id="bookSpread">
-
         <div class="page left-page">
             <div class="envelope-container" onclick="openLetter()">
                 <div class="envelope-bg"></div>
@@ -310,7 +307,6 @@
                 <div class="cake-bg">
                     <div class="flame flame-1" id="flame1"></div>
                     <div class="flame flame-2" id="flame2"></div>
-
                     <div class="smoke" id="smoke1" style="top: 45%; left: 31%;"></div>
                     <div class="smoke" id="smoke2" style="top: 45%; left: 65%;"></div>
                 </div>
@@ -323,8 +319,8 @@
                         </div>
                         <button class="fallback-btn" id="fallbackBtn" onmousedown="startBlowing()" onmouseup="stopBlowing()" ontouchstart="startBlowing()" ontouchend="stopBlowing()">Hold to Blow</button>
                     </div>
-                    <div style="font-size: 9px; color: #666; text-align: center;" id="micStatus">
-                        Blow into mic or hold button / press Spacebar to blow out candles
+                    <div style="font-size: 8px; color: #666; text-align: center;" id="micStatus">
+                        Blow into mic or hold button / press Spacebar
                     </div>
                 </div>
             </div>
@@ -357,7 +353,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             if (bgMusic) {
-                bgMusic.volume = 0.4;
+                bgMusic.volume = 0.6;
                 const playPromise = bgMusic.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(() => {
@@ -438,11 +434,11 @@
                 };
 
                 isMicActive = true;
-                document.getElementById('micBtn').textContent = "Mic Active";
-                micStatus.textContent = "Microphone connected! Blow strongly into your mic.";
+                document.getElementById('micBtn').textContent = "Active";
+                micStatus.textContent = "Mic connected! Blow strongly.";
             } catch (err) {
                 console.error("Mic access denied or HTTPS required:", err);
-                micStatus.textContent = "Mic blocked (HTTPS required). Use Hold to Blow button or Spacebar!";
+                micStatus.textContent = "Mic blocked. Use Hold to Blow / Spacebar!";
             }
         }
 
